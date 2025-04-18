@@ -1,0 +1,6 @@
+[app]
+include = 'admin'
+
+[api.api]
+prefix = '/option'
+tags = 'Option'
