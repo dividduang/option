@@ -21,6 +21,11 @@ class ConfigDataResponse(BaseModel):
     config_data: Any  # 配置数据，允许任意类型
 
 
+class UpdateConfigRequest(BaseModel):
+    """更新配置请求模型"""
+    config_data: Any  # 配置数据，允许任意类型
+
+
 # 保留完整响应模型供将来使用
 class ConfigResponse(BaseModel):
     """完整配置响应模型，包含API Key和配置数据"""

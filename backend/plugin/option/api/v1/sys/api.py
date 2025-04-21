@@ -7,7 +7,8 @@ from backend.common.response.response_code import CustomResponse
 from backend.plugin.option.schema.schema_config import (
     ConfigRequest,
     ConfigDataResponse,
-    SysConfigInfo
+    SysConfigInfo,
+    UpdateConfigRequest
 )
 
 
@@ -46,6 +47,25 @@ async def get_config(
     """
     config_data = await config_service.get_config(api_key=api_key)
     return ConfigDataResponse(config_data=config_data)
+
+
+@router.put('/update-config', summary='更新配置', response_model=ResponseModel, name='option_update_config')
+async def update_config(
+    update_request: UpdateConfigRequest,
+    api_key: str = Header(..., description='API Key')
+) -> ResponseModel:
+    """
+    根据API Key更新配置数据
+
+    :param update_request: 更新配置请求
+    :param api_key: API Key
+    :return: 标准响应格式，包含状态码、消息和数据
+    """
+    updated_config = await config_service.update_config(
+        api_key=api_key,
+        config_data=update_request.config_data
+    )
+    return response_base.success(res=CustomResponse(code=200, msg='更新成功'), data=updated_config)
 
 
 @router.delete('/delete-key-by-id/{api_key_id}', summary='通过Key ID删除配置和API Key', response_model=ResponseModel, dependencies=[DependsJwtAuth])

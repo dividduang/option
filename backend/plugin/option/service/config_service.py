@@ -92,6 +92,39 @@ class ConfigService:
         return config.config_data
 
     @staticmethod
+    @db_transaction
+    async def update_config(*, db: Any, api_key: str, config_data: Any) -> Any:
+        """
+        根据API Key更新配置数据
+
+        :param db: 数据库会话
+        :param api_key: API Key
+        :param config_data: 新的配置数据
+        :return: 更新后的配置数据
+        """
+        # 验证API Key
+        key_record = await APIKeyService.get_api_key_record(db, api_key)
+        if not key_record:
+            raise errors.ForbiddenError(msg='无效的API Key')
+        if not key_record.status:
+            raise errors.ForbiddenError(msg='API Key已被禁用')
+
+        # 获取配置
+        config = await config_dao.get_by_api_key_id(db, key_record.id)
+        if not config:
+            raise errors.NotFoundError(msg='未找到配置数据')
+
+        # 更新配置
+        config.config_data = config_data
+        await db.commit()
+        await db.refresh(config)
+
+        # 更新最后使用时间
+        await api_key_dao.update_last_used_time(db, api_key)
+
+        return config.config_data
+
+    @staticmethod
     async def _delete_config_and_api_key(db: Any, config=None, api_key=None) -> None:
         """
         内部方法：删除配置和API Key
@@ -214,6 +247,41 @@ class ConfigService:
                 'last_used_time': api_key_record.last_used_time
             }
         }
+
+    @staticmethod
+    @db_transaction
+    async def update_config(*, db: Any, api_key: str, config_data: Any) -> Any:
+        """
+        根据API Key更新配置数据
+
+        :param db: 数据库会话
+        :param api_key: API Key
+        :param config_data: 新的配置数据
+        :return: 更新后的配置数据
+        """
+        # 验证API Key
+        key_record = await APIKeyService.get_api_key_record(db, api_key)
+        if not key_record:
+            raise errors.ForbiddenError(msg='无效的API Key')
+        if not key_record.status:
+            raise errors.ForbiddenError(msg='API Key已被禁用')
+
+        # 获取配置
+        config = await config_dao.get_by_api_key_id(db, key_record.id)
+        if not config:
+            raise errors.NotFoundError(msg='未找到配置数据')
+
+        # 更新配置
+        config.config_data = config_data
+        await db.commit()
+        await db.refresh(config)
+
+        # 更新最后使用时间
+        await api_key_dao.update_last_used_time(db, api_key)
+
+        return config.config_data
+
+
 
     @staticmethod
     @db_transaction

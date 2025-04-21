@@ -8,7 +8,8 @@ from backend.plugin.option.schema.schema_config import (
     SysConfigInfo,
     APIKeyInfo,
     ConfigInfo,
-    APIKeyOnlyResponse
+    APIKeyOnlyResponse,
+    UpdateConfigRequest
 )
 from backend.plugin.option.schema.schema_api_key import (
     NameRequest,
@@ -23,6 +24,7 @@ __all__ = [
     'APIKeyInfo',
     'ConfigInfo',
     'APIKeyOnlyResponse',
+    'UpdateConfigRequest',
     'NameRequest',
     'APIKeyResponse'
 ]
