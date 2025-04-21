@@ -6,4 +6,4 @@
 ```使用方法
 运行option.sql
 ```
-<img src="./docs/tu.jpg">
+<img src="./docs/tu.jpg" width="300" height="300">
