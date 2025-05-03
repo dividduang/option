@@ -223,7 +223,7 @@ class ConfigService:
         :return: 掉码后的API Key
         """
         prefix = api_key[:11]  # 'wilmar-'
-        suffix = api_key[39:]  # 最后8位
+        suffix = api_key[35:]  # 最后8位
         return prefix + '*' * 28 + suffix
 
     @staticmethod
@@ -247,41 +247,6 @@ class ConfigService:
                 'last_used_time': api_key_record.last_used_time
             }
         }
-
-    @staticmethod
-    @db_transaction
-    async def update_config(*, db: Any, api_key: str, config_data: Any) -> Any:
-        """
-        根据API Key更新配置数据
-
-        :param db: 数据库会话
-        :param api_key: API Key
-        :param config_data: 新的配置数据
-        :return: 更新后的配置数据
-        """
-        # 验证API Key
-        key_record = await APIKeyService.get_api_key_record(db, api_key)
-        if not key_record:
-            raise errors.ForbiddenError(msg='无效的API Key')
-        if not key_record.status:
-            raise errors.ForbiddenError(msg='API Key已被禁用')
-
-        # 获取配置
-        config = await config_dao.get_by_api_key_id(db, key_record.id)
-        if not config:
-            raise errors.NotFoundError(msg='未找到配置数据')
-
-        # 更新配置
-        config.config_data = config_data
-        await db.commit()
-        await db.refresh(config)
-
-        # 更新最后使用时间
-        await api_key_dao.update_last_used_time(db, api_key)
-
-        return config.config_data
-
-
 
     @staticmethod
     @db_transaction
@@ -311,6 +276,23 @@ class ConfigService:
         return {
             'configs': configs_list
         }
+
+    @staticmethod
+    @db_transaction
+    async def get_api_key_by_id(*, db: Any, api_key_id: int) -> str:
+        """
+        通过API Key ID获取原始的API Key
+
+        :param db: 数据库会话
+        :param api_key_id: API Key ID
+        :return: 完整的未掩码的API Key
+        """
+        # 获取API Key记录
+        api_key_record = await api_key_dao.select_model_by_column(db, id=api_key_id)
+        if not api_key_record:
+            raise errors.NotFoundError(msg=f'未找到ID为 {api_key_id} 的API Key')
+        
+        return api_key_record.key
 
 
 config_service: ConfigService = ConfigService()

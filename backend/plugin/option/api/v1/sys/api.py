@@ -93,3 +93,17 @@ async def get_sys_config_info() -> ResponseSchemaModel[SysConfigInfo]:
     return response_base.success(data=SysConfigInfo(**result))
 
 
+@router.get('/get-api-key/{api_key_id}', summary='获取完整的API Key', response_model=ResponseModel, dependencies=[DependsJwtAuth])
+async def get_api_key(
+    api_key_id: int = Path(..., description='API Key ID')
+) -> ResponseModel:
+    """
+    通过API Key ID获取完整的未掩码的API Key
+
+    :param api_key_id: API Key ID
+    :return: 完整的API Key
+    """
+    api_key = await config_service.get_api_key_by_id(api_key_id=api_key_id)
+    return response_base.success(res=CustomResponse(code=200, msg='获取成功'), data=api_key)
+
+

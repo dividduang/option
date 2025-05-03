@@ -34,3 +34,6 @@ create table sys_api_config
             on delete cascade
 )
     comment 'API Key配置表';
+
+insert into fba.sys_menu (id, title, name, path, sort, icon, type, component, perms, status, display, cache, link, remark, parent_id, created_time, updated_time)
+values  (22, '配置下发', 'Option', 'option', 999, 'eos-icons:admin', 0, null, null, 1, 1, 1, null, null, null, '2023-07-27 19:23:00', null);

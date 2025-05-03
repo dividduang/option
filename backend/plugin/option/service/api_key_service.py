@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import uuid
+import re
 
 from backend.common.exception import errors
 from backend.plugin.option.crud.crud_api_key import api_key_dao
@@ -16,7 +17,7 @@ class APIKeyService:
 
         :return:
         """
-        return 'wilmar-' + str(uuid.uuid4())
+        return 'wilmar-' + re.sub(r'-', '', str(uuid.uuid4()))
 
     @staticmethod
     async def create_api_key(*, obj: NameRequest) -> str:
