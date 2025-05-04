@@ -8,7 +8,8 @@
 https://github.com/dividduang/option_ui
 ```
 
-```使用方法
+# 使用方法
+```
 运行option.sql
 ```
 <img src="./docs/tu.jpg" width="300" height="300">
