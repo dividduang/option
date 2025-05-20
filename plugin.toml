@@ -1,6 +1,20 @@
+
+# 插件信息
+[plugin]
+summary = '配置下发'
+# 插件版本号
+version = '0.0.1'
+# 插件描述
+description = '配置下发'
+# 插件作者
+author = 'david'
+
+# 应用配置
 [app]
 include = 'admin'
 
-[api.api]
+# 接口配置
+[api.option]
 prefix = '/option'
+# 标签，用于 FastAPI 接口文档
 tags = 'Option'
