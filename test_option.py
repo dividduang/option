@@ -16,7 +16,7 @@ def save_config():
     url = 'http://127.0.0.1:8000/api/v1/option/save-config'
     data = {
         "name": "邮箱",
-        "config_data": {"to":["djr@wilmar.com.cn"],"cc":["djren@wilmar.com.cn"]}
+        "config_data": {"to":["djr@qq.com"],"cc":["djren@qq.com"]}
     }
 
     response = httpx.post(url, json=data)
