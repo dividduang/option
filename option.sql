@@ -36,4 +36,4 @@ create table sys_api_config
     comment 'API Key配置表';
 
 INSERT INTO fba.sys_menu (title, name, path, sort, icon, type, component, perms, status, display, cache, link, remark, parent_id, created_time, updated_time)
-VALUES ('配置下发', 'Option', 'option', 7, 'eos-icons:admin', 0, null, null, 1, 1, 1, '', null, null, now(), null);
+VALUES ('配置下发', 'Option', 'option', 7, 'eos-icons:admin', 0, '/plugins/option/views/index', null, 1, 1, 1, '', null, null, now(), null);
